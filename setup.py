@@ -8,7 +8,7 @@ version_path = os.path.join(
 )
 with open(version_path, "rt") as f:
     exec(f.read(), version_contents)
-    
+
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
