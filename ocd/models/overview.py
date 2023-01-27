@@ -31,7 +31,7 @@ class ModelsOverview(Command):
         parser.epilog = BROWSER_EPILOG
         return parser
 
-    def take_action(self, _):
+    def take_action(self, parsed_args):  # noqa
         page = f'{self.app.openai_docs_base}/models/overview'
         open_browser(
             page=page,
@@ -43,3 +43,4 @@ class ModelsOverview(Command):
 
 
 # vim: set fileencoding=utf-8 ts=4 sw=4 tw=0 et :
+

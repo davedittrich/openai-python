@@ -24,8 +24,9 @@ from cliff.app import App
 from cliff.commandmanager import CommandManager
 from psec.exceptions import SecretNotFoundError
 from psec.secrets_environment import SecretsEnvironment
-from psec.utils import (  # pylint: disable=no-name-in-module
+from psec.utils import (
     bell,
+    get_default_environment,
     show_current_value,
     Timer,
 )
@@ -284,3 +285,4 @@ if __name__ == '__main__':
     sys.exit(main(argv=sys.argv[1:]))
 
 # vim: set fileencoding=utf-8 ts=4 sw=4 tw=0 et :
+

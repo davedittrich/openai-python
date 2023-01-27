@@ -13,7 +13,7 @@ from cliff.show import ShowOne
 
 # Local imports
 import openai
-from ocd.utils import (  # pylint: disable=no-name-in-module
+from ocd.utils import (
     Defaults,
     get_text_from_completion,
     ranged_type,
@@ -129,3 +129,4 @@ class EditsCreate(ShowOne):
 
 
 # vim: set fileencoding=utf-8 ts=4 sw=4 tw=0 et :
+

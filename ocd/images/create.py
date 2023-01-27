@@ -17,7 +17,7 @@ from PIL import Image
 
 # Local imports
 import openai
-from ocd.utils import (  # pylint: disable=no-name-in-module
+from ocd.utils import (
     Defaults,
     open_browser,
     ranged_type,
@@ -137,3 +137,4 @@ class ImagesCreate(Command):
 
 
 # vim: set fileencoding=utf-8 ts=4 sw=4 tw=0 et :
+
