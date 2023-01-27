@@ -7,7 +7,7 @@ version_path = os.path.join(
     os.path.abspath(os.path.dirname(__file__)), "openai/version.py"
 )
 with open(version_path, "rt") as f:
-    exec(f.read(), version_contents)
+    exec(f.read(), version_contents)  # nosec
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -28,10 +28,14 @@ setup(
     long_description_content_type="text/markdown",
     version=version_contents["VERSION"],
     install_requires=[
+        "cliff",  # For CLI framework
         "requests>=2.20",  # to get the patch for CVE-2018-18074
         "tqdm",  # Needed for progress bars
+        "python-secrets",  # For flexibility in accessing secrets and state apart from source code
+        'tiktoken',  # Needed for calculating number of tokens
         'typing_extensions;python_version<"3.8"',  # Needed for type hints for mypy
         "aiohttp",  # Needed for async support
+        "Pillow",  # Needed for manipulating images
     ],
     extras_require={
         "dev": ["black~=21.6b0", "pytest==6.*", "pytest-asyncio", "pytest-mock"],
@@ -53,7 +57,18 @@ setup(
     entry_points={
         "console_scripts": [
             "openai=openai._openai_scripts:main",
+            "ocd=ocd.__main__:main",
         ],
+        "ocd": [
+            "completions create=ocd.completions.create:CompletionsCreate",
+            "edits create=ocd.edits.create:EditsCreate",
+            "fine-tune list=ocd.fine_tune.list:FineTuneList",
+            "images create=ocd.images.create:ImagesCreate",
+            "models list=ocd.models.list:ModelsList",
+            "models retrieve=ocd.models.retrieve:ModelsRetrieve",
+            "models overview=ocd.models.overview:ModelsOverview",
+            "text analyze=ocd.text.analyze:TextAnalyze",
+        ]
     },
     packages=find_packages(exclude=["tests", "tests.*"]),
     package_data={
