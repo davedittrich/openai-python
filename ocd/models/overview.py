@@ -11,10 +11,14 @@ import sys
 
 # External imports
 from cliff.command import Command
-from ocd.utils import open_browser
+
+# Local imports
+from ocd.utils import (  # pylint: disable=no-name-in-module
+    BROWSER_EPILOG,
+    open_browser,
+)
 
 
-BROWSER = os.getenv('BROWSER', 'lynx')
 logger = logging.getLogger(__name__)
 
 
@@ -23,8 +27,9 @@ class ModelsOverview(Command):
     Open the models overview documentation page.
     """
 
-    def get_parser(self, prog_name):  # noqa
+    def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
+        parser.epilog = BROWSER_EPILOG
         return parser
 
     def take_action(self, parsed_args):  # noqa

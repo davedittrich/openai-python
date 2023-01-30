@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
 """
-Initialization file for `ocd` command classes.
+Initialization file for `ocd` command classes and utility functions.
 """
 
 # Standard imports
 import argparse
+import os
 import subprocess  # nosec
 import sys
+import textwrap
 import webbrowser
 
 from pathlib import Path
@@ -15,10 +17,40 @@ from pathlib import Path
 # External imports
 import tiktoken
 
+from psec.utils import get_default_environment
+
 # Local imports
 import openai
 
+BROWSER = os.environ.get('BROWSER', None)
+BROWSER_EPILOG = textwrap.dedent("""
+    ABOUT THE BROWSER OPEN FEATURE
 
+    This program uses the Python ``webbrowser`` module to open a browser.
+
+        https://docs.python.org/3/library/webbrowser.html
+        https://github.com/python/cpython/blob/3.8/Lib/webbrowser.py
+
+    This module supports a large set of browsers for various operating system
+    distributions. It will attempt to chose an appropriate browser from operating
+    system defaults.  If it is not possible to open a graphical browser
+    application, it may open the ``lynx`` text browser.
+
+    You can choose which browser ``webbrowser`` will open using the identifier
+    from the set in the ``webbrowser`` documentation.  Either specify the browser
+    using the ``--browser`` option on the command line, or export the environment
+    variable ``BROWSER`` set to the identifier (e.g., ``export BROWSER=firefox``).
+
+    It is also possible to set the ``BROWSER`` environment variable to a full path
+    to an executable to run. On Windows 10 with Windows Subsystem for Linux, you
+    can use this feature to open a Windows executable outside of WSL. (E.g., using
+    ``export BROWSER='/c/Program Files/Mozilla Firefox/firefox.exe'`` will open
+    Firefox installed in that path).
+
+    Also note that when this program attempts to open a browser, an exception may
+    be thrown if the process has no TTY. If this happens, use the ``--force``
+    option to bypass this behavior and attempt to open the browser anyway.
+""")  # noqa
 DEFAULT_EDIT_MODEL_ID = 'text-davinci-edit-001'
 DEFAULT_EMBEDDING_MODEL_ID = 'text-embedding-ada-002'
 DEFAULT_IMAGES_N = 1
@@ -40,6 +72,7 @@ MAX_IMAGES_N = 10
 
 def get_text_from_completion(completion):
     return completion.choices[0].text
+
 
 def get_model_ids(model_list=None):
     """
@@ -138,7 +171,23 @@ def open_browser(
     logger=None,
 ):
     """
-    Open web browser to specified page.
+    Open a browser window to the specified page.
+
+    Parameters
+    ----------
+    page : str
+        The URL to open.
+    browser : str, optional
+        The browser to use. If not specified, the system default will be used.
+    force : bool, optional
+        If True, open the browser even if stdin is not a TTY.
+    logger : logging.Logger, optional
+        If specified, log the action.
+
+    Raises
+    ------
+    RuntimeError
+        If no page is specified, or if stdin is not a TTY and force is not True.
     """
     if not sys.stdin.isatty() and not force:
         raise RuntimeError(

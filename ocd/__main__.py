@@ -30,6 +30,11 @@ from psec.utils import (
 
 # Internal imports
 import openai
+
+from ocd.utils import (  # pylint: disable=no-name-in-module
+    BROWSER,
+    BROWSER_EPILOG,
+)
 from openai.version import VERSION
 
 DEFAULT_ENVIRONMENT = get_default_environment()
@@ -61,7 +66,8 @@ class OCDApp(App):
             "OPENAI_API_KEY",
             self.secrets.get_secret("openai_api_key"),
         )
-        self.openai_docs_base = 'https://beta.openai.com/docs'
+        self.openai_base = 'https://beta.openai.com'
+        self.openai_docs_base = f'{self.openai_base}/docs'
 
     def build_option_parser(self, description, version):
         parser = super().build_option_parser(
@@ -92,7 +98,7 @@ class OCDApp(App):
         parser.add_argument(
             '--browser',
             action='store',
-            default=None,
+            default=BROWSER,
             help='Browser to use'
         )
         parser.add_argument(
@@ -115,13 +121,9 @@ class OCDApp(App):
             default=DEFAULT_ENVIRONMENT,
             help='Deployment environment selector (Env: D2_ENVIRONMENT)'
         )
-        parser.epilog = textwrap.dedent(f"""
+        parser.epilog = BROWSER_EPILOG + '\n' + textwrap.dedent(f"""
             Current working dir: {os.getcwd()}
             Python interpreter:  {sys.executable} (v{sys.version.split()[0]})
-
-            To control the browser that is used when opening web pages, set the
-            BROWSER environment variable (e.g., ``BROWSER=lynx``).  See:
-            https://github.com/python/cpython/blob/3.8/Lib/webbrowser.py
 
             Environment variables consumed:
               BROWSER             Default browser for use by webbrowser.open().{show_current_value('BROWSER')}
