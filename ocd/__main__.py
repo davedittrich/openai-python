@@ -69,7 +69,7 @@ class OCDApp(App):
         self.openai_base = 'https://beta.openai.com'
         self.openai_docs_base = f'{self.openai_base}/docs'
 
-    def build_option_parser(self, description, version):
+    def build_option_parser(self, description, version):  # pylint: disable=arguments-differ noqa
         parser = super().build_option_parser(
             description,
             version
@@ -168,7 +168,7 @@ class OCDApp(App):
             bell()
 
 
-def main(argv=sys.argv[1:]):
+def main(argv=None):  # noqa
     """
     Command line interface entry point for the ``ocd`` program.
     """
@@ -177,6 +177,6 @@ def main(argv=sys.argv[1:]):
 
 
 if __name__ == '__main__':
-    sys.exit(main(sys.argv[1:]))
+    sys.exit(main(argv=sys.argv[1:]))
 
 # vim: set fileencoding=utf-8 ts=4 sw=4 tw=0 et :

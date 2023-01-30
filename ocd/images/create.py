@@ -8,10 +8,8 @@ Create one or more images from a prompt.
 import base64
 import io
 import logging
-import sys
 
 from pathlib import Path
-from io import BytesIO
 
 # External imports
 from cliff.command import Command

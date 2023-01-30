@@ -5,7 +5,6 @@ Create a completion using a model.
 """
 
 # Standard imports
-import argparse
 import logging
 import sys
 

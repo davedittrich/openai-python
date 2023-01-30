@@ -54,6 +54,9 @@ BROWSER_EPILOG = textwrap.dedent("""
 
 
 def get_text_from_completion(completion):
+    """
+    Return the text from the completion
+    """
     return completion.choices[0].text
 
 
@@ -86,23 +89,36 @@ def save_tokens_to_file(file_name: str, tokens: list) -> None:
 
 
 def get_file_type(file_path: Path) -> str:
-    p = subprocess.Popen(
+    """
+    This function is a wrapper around the `file` command that is used
+    to determine the file type of a file.
+
+    Args:
+        file_path: The path to the file to be checked.
+
+    Returns:
+        A string containing the file type of the file.
+    """
+    file_output = ""
+    with subprocess.Popen(
         ['/usr/bin/file', '-b', file_path.name],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         shell=False  # nosec
-    )
-    pout, perr = p.communicate()
-    return (
-        pout.decode('utf-8').strip() if len(perr) == 0
-        else str(file_path.suffix[1:]).upper()
-    )
+    ) as process:
+        pout, perr = process.communicate()
+        file_output = (
+            pout.decode('utf-8').strip() if len(perr) == 0
+            else str(file_path.suffix[1:]).upper()
+        )
+    return file_output
 
 
 # Based on: https://stackoverflow.com/a/64259328
 def ranged_type(value_type, min_value, max_value):
     """
-    Return function handle of an argument type function for ArgumentParser checking a range:
+    Return function handle of an argument type function for
+    ArgumentParser checking a range:
         min_value <= arg <= max_value
 
     Parameters
@@ -124,16 +140,16 @@ def ranged_type(value_type, min_value, max_value):
 
     def range_checker(arg: str):
         try:
-            f = value_type(arg)
-        except ValueError:
+            candidate = value_type(arg)
+        except ValueError as exc:
             raise argparse.ArgumentTypeError(
                 f'[-] must be a valid {value_type}'
-            )
-        if f < min_value or f > max_value:
+            ) from exc
+        if candidate < min_value or candidate > max_value:
             raise argparse.ArgumentTypeError(
                 f'[-] must be within [{min_value}, {min_value}]'
             )
-        return f
+        return candidate
 
     # Return function handle to checking function
     return range_checker

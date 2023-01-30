@@ -5,7 +5,6 @@ Edit a prompt given an instruction and return the result.
 """
 
 # Standard imports
-import argparse
 import logging
 import sys
 
@@ -94,7 +93,8 @@ class EditsCreate(ShowOne):
 
     def take_action(self, parsed_args):  # noqa
         if parsed_args.n > 1 and not parsed_args.all:
-            # Hack to get around lack of support for multiple completion choices.
+            # Hack to get around lack of support for multiple
+            # completion choices.
             parsed_args.all = True
             parsed_args.usage = False
         prompt = parsed_args.prompt.rstrip()

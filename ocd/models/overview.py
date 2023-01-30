@@ -6,7 +6,6 @@ Open the model overview documentation page.
 
 # Standard imports
 import logging
-import os
 import sys
 
 # External imports
@@ -32,7 +31,7 @@ class ModelsOverview(Command):
         parser.epilog = BROWSER_EPILOG
         return parser
 
-    def take_action(self, parsed_args):  # noqa
+    def take_action(self, _):
         page = f'{self.app.openai_docs_base}/models/overview'
         open_browser(
             page=page,
