@@ -19,16 +19,13 @@ from PIL import Image
 
 # Local imports
 import openai
-from ocd.utils import (
+from ocd.utils import (  # pylint: disable=no-name-in-module
+    Defaults,
     open_browser,
     ranged_type,
-    DEFAULT_IMAGES_N,
-    IMAGES_RESPONSE_FORMATS,
-    IMAGES_SIZES,
-    MAX_IMAGES_N,
-    MAX_IMAGES_PROMPT,
 )
 
+defaults = Defaults()
 logger = logging.getLogger(__name__)
 
 
@@ -76,20 +73,20 @@ class ImagesCreate(Command):
         )
         parser.add_argument(
             "-n",
-            default=DEFAULT_IMAGES_N,
-            type=ranged_type(int, 1, MAX_IMAGES_N),
+            default=defaults.IMAGES_N,
+            type=ranged_type(int, 1, defaults.MAX_IMAGES_N),
             help="sampling temperature to use",
         )
         parser.add_argument(
             "--size",
-            default=IMAGES_SIZES[0],
-            choices=IMAGES_SIZES,
+            default=defaults.IMAGES_SIZES[0],
+            choices=defaults.IMAGES_SIZES,
             help="sampling temperature to use",
         )
         parser.add_argument(
             "--response-format",
-            default=IMAGES_RESPONSE_FORMATS[0],
-            choices=IMAGES_RESPONSE_FORMATS,
+            default=defaults.IMAGES_RESPONSE_FORMATS[0],
+            choices=defaults.IMAGES_RESPONSE_FORMATS,
             help="format in which the generated image(s) are returned",
         )
         parser.add_argument(
@@ -101,9 +98,10 @@ class ImagesCreate(Command):
         return parser
 
     def take_action(self, parsed_args):  # noqa
-        if len(parsed_args.prompt) > MAX_IMAGES_PROMPT:
+        if len(parsed_args.prompt) > defaults.MAX_IMAGES_PROMPT:
             raise ValueError(
-                f"[-] prompt cannot be exceed {MAX_IMAGES_PROMPT} characters"
+                "[-] prompt cannot exceed "
+                f"{defaults.MAX_IMAGES_PROMPT} characters"
             )
         image_file_path = []
         if parsed_args.response_format != "b64_json":

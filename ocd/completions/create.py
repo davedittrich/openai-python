@@ -14,14 +14,15 @@ from cliff.show import ShowOne
 
 # Local imports
 import openai
-from ocd.utils import (
-    DEFAULT_MAX_TOKENS,
-    DEFAULT_MODEL_ID,
-    DEFAULT_TEMPERATURE,
+from ocd.utils import (  # pylint: disable=no-name-in-module
+    Defaults,
     get_text_from_completion,
     ranged_type,
     print_completion,
 )
+
+defaults = Defaults()
+
 
 class CompletionsCreate(ShowOne):
     """
@@ -49,7 +50,7 @@ class CompletionsCreate(ShowOne):
         parser.add_argument(
             "-m", "--model",
             dest="model_id",
-            default=DEFAULT_MODEL_ID,
+            default=defaults.MODEL_ID,
             help="ID of the model to use",
         )
         parser.add_argument(
@@ -60,12 +61,12 @@ class CompletionsCreate(ShowOne):
         )
         parser.add_argument(
             "--max-tokens",
-            default=DEFAULT_MAX_TOKENS,
+            default=defaults.MAX_TOKENS,
             help="maximum tokens",
         )
         parser.add_argument(
             "--temperature",
-            default=DEFAULT_TEMPERATURE,
+            default=defaults.TEMPERATURE,
             type=ranged_type(float, 0.0, 1.0),
             help="sampling temperature to use",
         )

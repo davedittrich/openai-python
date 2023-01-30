@@ -34,11 +34,11 @@ import openai
 from ocd.utils import (  # pylint: disable=no-name-in-module
     BROWSER,
     BROWSER_EPILOG,
+    Defaults,  # pyright: reportGeneralTypeIssues=false
 )
 from openai.version import VERSION
 
-DEFAULT_ENVIRONMENT = get_default_environment()
-
+defaults = Defaults()
 
 class OCDApp(App):
     """Main CLI application class."""
@@ -118,7 +118,7 @@ class OCDApp(App):
             '-e', '--environment',
             metavar='<environment>',
             dest='environment',
-            default=DEFAULT_ENVIRONMENT,
+            default=defaults.ENVIRONMENT,
             help='Deployment environment selector (Env: D2_ENVIRONMENT)'
         )
         parser.epilog = BROWSER_EPILOG + '\n' + textwrap.dedent(f"""

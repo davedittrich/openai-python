@@ -14,13 +14,15 @@ from cliff.show import ShowOne
 
 # Local imports
 import openai
-from ocd.utils import (
-    DEFAULT_EDIT_MODEL_ID,
-    DEFAULT_TEMPERATURE,
+from ocd.utils import (  # pylint: disable=no-name-in-module
+    Defaults,
     get_text_from_completion,
     ranged_type,
     print_completion,
 )
+
+
+defaults = Defaults()
 
 
 class EditsCreate(ShowOne):
@@ -49,7 +51,7 @@ class EditsCreate(ShowOne):
         parser.add_argument(
             "-m", "--model",
             dest="model_id",
-            default=DEFAULT_EDIT_MODEL_ID,
+            default=defaults.EDIT_MODEL_ID,
             help="ID of the model to use",
         )
         parser.add_argument(
@@ -60,7 +62,7 @@ class EditsCreate(ShowOne):
         )
         parser.add_argument(
             "--temperature",
-            default=DEFAULT_TEMPERATURE,
+            default=defaults.TEMPERATURE,
             type=ranged_type(float, 0.0, 1.0),
             help="sampling temperature to use",
         )
