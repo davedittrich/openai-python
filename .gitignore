@@ -11,3 +11,4 @@ build
 examples/azure/training.jsonl
 examples/azure/validation.jsonl
 data/
+.python_secrets_environment

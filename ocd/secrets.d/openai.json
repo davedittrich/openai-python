@@ -1,0 +1,18 @@
+[
+  {
+    "Variable": "openai_api_key",
+    "Type": "string",
+    "Prompt": "OpenAI API Key",
+    "Options": "*",
+    "Export": "OPENAI_API_KEY",
+    "Help": "https://beta.openai.com/account/api-keys"
+  },
+  {
+    "Variable": "openai_organization_id",
+    "Type": "string",
+    "Prompt": "OpenAI Organization ID",
+    "Options": "*",
+    "Export": "OPENAI_ORGANIZATION_ID",
+    "Help": "https://beta.openai.com/account/org-settings"
+  }
+]
