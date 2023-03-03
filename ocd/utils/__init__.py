@@ -194,14 +194,15 @@ def open_browser(
         )
     if page is None:
         raise RuntimeError("[-] not page specified")
-    which = "system default" if browser is None else browser
-    if logger is not None:
-        logger.info("[+] opening browser '%s' for %s", which, page)
-    if browser is not None:
+    if browser in ['', None]:
+        if logger is not None:
+            logger.info("[+] using system default browser to open '%s'", page)
+        webbrowser.open(page, new=1)
+    else:
+        if logger is not None:
+            logger.info("[+] using %s to open '%s'", browser, page)
         controller = webbrowser.get(using=browser)
         controller.open_new_tab(page)
-    else:
-        webbrowser.open(page, new=1)
 
 
 class Defaults():
