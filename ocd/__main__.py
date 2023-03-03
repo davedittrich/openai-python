@@ -43,8 +43,8 @@ from ocd.utils import (  # pylint: disable=no-name-in-module
 from openai.version import VERSION
 
 
+# Set up command line option defaults
 defaults = Defaults()
-
 
 def create_psec_environment(environment: SecretsEnvironment) -> Path:
     """

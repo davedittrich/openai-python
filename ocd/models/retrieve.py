@@ -19,7 +19,71 @@ class ModelsRetrieve(ShowOne):
     """
     Show details about a single model.
 
-    To see the model permissions, use the ``--permission`` option.
+    Fields are shown one row at a time::
+
+        $ ocd models retrieve curie
+        +----------+------------+
+        | Field    | Value      |
+        +----------+------------+
+        | id       | curie      |
+        | object   | model      |
+        | created  | 1649359874 |
+        | owned_by | openai     |
+        | root     | curie      |
+        | parent   | None       |
+        +----------+------------+
+
+    To see the model permissions, use the ``--permission`` option::
+
+        $ ocd models retrieve curie --permission
+        +----------------------+------------------------------------+
+        | Field                | Value                              |
+        +----------------------+------------------------------------+
+        | id                   | modelperm-oPaljeveTjEIDbhDjzFiyf4V |
+        | object               | model_permission                   |
+        | created              | 1675106503                         |
+        | allow_create_engine  | False                              |
+        | allow_sampling       | True                               |
+        | allow_logprobs       | True                               |
+        | allow_search_indices | False                              |
+        | allow_view           | True                               |
+        | allow_fine_tuning    | False                              |
+        | organization         | *                                  |
+        | group                | None                               |
+        | is_blocking          | False                              |
+        +----------------------+------------------------------------+
+
+    To get the raw results, use the ``--raw`` option::
+
+        $ ocd model retrieve curie --raw
+        [organization=user-waomxsvz183exp61ebmrx645] {
+          "created": 1649359874,
+          "id": "curie",
+          "object": "model",
+          "owned_by": "openai",
+          "parent": null,
+          "permission": [
+            {
+              "allow_create_engine": false,
+              "allow_fine_tuning": false,
+              "allow_logprobs": true,
+              "allow_sampling": true,
+              "allow_search_indices": false,
+              "allow_view": true,
+              "created": 1675106503,
+              "group": null,
+              "id": "modelperm-oPaljeveTjEIDbhDjzFiyf4V",
+              "is_blocking": false,
+              "object": "model_permission",
+              "organization": "*"
+            }
+          ],
+          "root": "curie"
+        }
+
+    KNOWN LIMITATIONS: At this time, only one permission object is handled
+    for tabular output.
+
     """
 
     logger = logging.getLogger(__name__)
@@ -29,7 +93,6 @@ class ModelsRetrieve(ShowOne):
         parser.add_argument(
             '--permission',
             action='store_true',
-            dest='permission',
             default=False,
             help='show model permission settings'
         )

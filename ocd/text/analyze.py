@@ -22,7 +22,15 @@ from ocd.utils import (
 
 class TextAnalyze(Lister):
     """
-    Analyze one or more text files.
+    Analyze one or more text files.  This command is helpful when preparing
+    data for fine tuning a model, generating embeddings, etc.::
+
+        $ ocd text analyze LICENSE
+        +---------+------------+-------+-------+--------+
+        | name    | type       | bytes | lines | tokens |
+        +---------+------------+-------+-------+--------+
+        | LICENSE | ASCII text |  1083 |    22 |    278 |
+        +---------+------------+-------+-------+--------+
     """
 
     logger = logging.getLogger(__name__)

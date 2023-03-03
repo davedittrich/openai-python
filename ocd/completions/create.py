@@ -31,7 +31,88 @@ class CompletionsCreate(ShowOne):
     Trailing whitespace is removed from the prompt as it impacts
     tokenization of the prompt string. While the OpenAI API allows for
     the prompt to be a list of strings or tokens in addition to just
-    a simple string, passing those is not supported at this time.
+    a simple string, passing those is not supported at this time::
+
+        $ ocd completion create --prompt "What is the exact text of the first sentence in the U.S. Constitution?"
+        +------------+-----------------------------------------------------------------------+
+        | Field      | Value                                                                 |
+        +------------+-----------------------------------------------------------------------+
+        | prompt     | What is the exact text of the first sentence in the U.S. Constitution? |
+        | completion |                                                                       |
+        |            |                                                                       |
+        |            | We the People of the United States, in Order to form a more           |
+        +------------+-----------------------------------------------------------------------+
+
+    The leading whitespace in the completion is retained unless the ``--trim`` option is specified.
+
+    To get the full response from the API in JSON format, use the ``--raw`` option::
+
+        $ ocd completion create --prompt "What is the exact text of the first sentence in the U.S. Constitution?" --raw
+        [organization=user-waomxsvz183exp61ebmrx645] {
+          "choices": [
+            {
+              "finish_reason": "length",
+              "index": 0,
+              "logprobs": null,
+              "text": "\n\n\"We the People of the United States, in Order to form a"
+            }
+          ],
+          "created": 1675116632,
+          "id": "cmpl-6eWe8bdBPXA6Sx8lmLMus7xf7cZUF",
+          "model": "curie-instruct-beta",
+          "object": "text_completion",
+          "usage": {
+            "completion_tokens": 16,
+            "prompt_tokens": 18,
+            "total_tokens": 34
+          }
+        }
+
+    You can request more than one completion using the ``-n`` option,
+    though you should be cautious using this option as it can quickly
+    use up a large number of tokens. The default output format is
+    tabular and the leading whitespace in completions is maintained::
+
+        +--------------+-------------------------------------+
+        | Field        | Value                               |
+        +--------------+-------------------------------------+
+        | prompt       | Give a single name for a boy. Name: |
+        | completion_1 |                                     |
+        |              |                                     |
+        |              |  Liam                               |
+        | completion_2 |                                     |
+        |              |                                     |
+        |              | Derek                               |
+        | completion_3 |                                     |
+        |              |                                     |
+        |              | Ethan                               |
+        | completion_4 |  Adam                               |
+        +--------------+-------------------------------------+
+
+    The ``--trim`` option removes whitespace from the completions::
+
+        +--------------+-------------------------------------+
+        | Field        | Value                               |
+        +--------------+-------------------------------------+
+        | prompt       | Give a single name for a boy. Name: |
+        | completion_1 | Kai                                 |
+        | completion_2 | Connor                              |
+        | completion_3 | Miles                               |
+        | completion_4 | Luke                                |
+        +--------------+-------------------------------------+
+
+    The ``--text`` option outputs the completions without including the
+    prompt or using the tabular formatting feature. It can be combined
+    with the ``--trim`` option to get cleaner output::
+
+        ===== Completion 0 =====
+        Adam
+        ===== Completion 1 =====
+        Dylan
+        ===== Completion 2 =====
+        David
+        ===== Completion 3 =====
+        Landon
 
     You can optionally specify a suffix, which is a string that
     comes after a completion of inserted text.

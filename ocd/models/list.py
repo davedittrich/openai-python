@@ -11,7 +11,7 @@ import sys
 # External imports
 from cliff.lister import Lister
 
-# Internal imports
+# Local imports
 import openai
 
 
@@ -19,16 +19,67 @@ class ModelsList(Lister):
     """
     List models.
 
-    If a name is passed as an argument, the model whose ID matches that
-    name is returned.
+    When no name is passed as an argument, all models are returned. Providing a
+    name string filters the results to only return the model whose ID exactly
+    matches that string::
 
-    Use the `--fuzzy` option to return all models that contain the string
-    anywhere in their model ID. This is useful for finding fine-tuned or
-    experimental models.
+        $ ocd models list curie
+        +-------+--------+------------+----------+-------+--------+
+        | id    | object |    created | owned_by | root  | parent |
+        +-------+--------+------------+----------+-------+--------+
+        | curie | model  | 1649359874 | openai   | curie | None   |
+        +-------+--------+------------+----------+-------+--------+
 
-    Attributes except `model_permission` are shown. To see permission
-    values, use `model show` instead with the exact model name.
-    """
+    Adding the `--fuzzy` option expands the results to include all models
+    that have an ID containing the name string. This is useful for identifying
+    the latest versioned model, fine-tuned models, or experimental versions
+    of a model::
+
+        $ ocd models list curie --fuzzy
+        +-----------------------------+--------+------------+------------+-----------------------------+--------+
+        | id                          | object |    created | owned_by   | root                        | parent |
+        +-----------------------------+--------+------------+------------+-----------------------------+--------+
+        | curie-instruct-beta         | model  | 1649364042 | openai     | curie-instruct-beta         | None   |
+        | curie-search-query          | model  | 1651172509 | openai-dev | curie-search-query          | None   |
+        | text-curie-001              | model  | 1649364043 | openai     | text-curie-001              | None   |
+        | text-similarity-curie-001   | model  | 1651172507 | openai-dev | text-similarity-curie-001   | None   |
+        | text-search-curie-doc-001   | model  | 1651172509 | openai-dev | text-search-curie-doc-001   | None   |
+        | text-search-curie-query-001 | model  | 1651172509 | openai-dev | text-search-curie-query-001 | None   |
+        | curie-similarity            | model  | 1651172510 | openai-dev | curie-similarity            | None   |
+        | curie-search-document       | model  | 1651172508 | openai-dev | curie-search-document       | None   |
+        | curie                       | model  | 1649359874 | openai     | curie                       | None   |
+        | curie:2020-05-03            | model  | 1607632725 | system     | curie:2020-05-03            | None   |
+        | if-curie-v2                 | model  | 1610745968 | openai     | if-curie-v2                 | None   |
+        | text-curie:001              | model  | 1641955047 | system     | text-curie:001              | None   |
+        +-----------------------------+--------+------------+------------+-----------------------------+--------+
+
+    If not otherwise specified, results are sorted by ``created` in descending order. This
+    makes it easier to identify the latest models (e.g., a new fine-tuned model that you
+    create would show up at the top of the table.) To change this, use the sorting
+    control options.
+
+    All model attributes except `model_permission` are shown. Use the column specification
+    option to change the columns or their order in the table. To see permission
+    settings, use the ``models retrieve`` command with the exact model name::
+
+        $ ocd models list ada --fuzzy -c id -c created -f csv
+        "id","created"
+        "ada",1649357491
+        "text-embedding-ada-002",1671217299
+        "text-ada-001",1649364042
+        "text-similarity-ada-001",1651172505
+        "ada-code-search-code",1651172505
+        "ada-similarity",1651172507
+        "code-search-ada-text-001",1651172507
+        "text-search-ada-query-001",1651172505
+        "ada-code-search-text",1651172510
+        "text-search-ada-doc-001",1651172507
+        "code-search-ada-code-001",1651172507
+        "ada-search-query",1651172505
+        "ada-search-document",1651172507
+        "ada:2020-05-03",1607631625
+        "text-ada:001",1641949608
+    """  # pylint: disable=line-too-long
 
     logger = logging.getLogger(__name__)
 
