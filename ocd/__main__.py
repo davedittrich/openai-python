@@ -149,6 +149,9 @@ class OCDApp(App):
         return parser
 
     def initialize_app(self, argv):
+        if '--debug' not in argv:
+            root_logger = logging.getLogger('')
+            root_logger.setLevel(logging.INFO)
         self.LOG.debug('[*] initialize_app(%s)', self.__class__.NAME)
         if sys.version_info <= (3, 7):
             raise RuntimeError(
