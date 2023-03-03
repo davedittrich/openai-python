@@ -8,6 +8,11 @@ build:
 .PHONY: clean
 clean:
 	-rm -f dist/openai-*.tar.gz
+	find . -name '*.pyc' -delete
+
+.PHONY: spotless
+spotless: clean
+	find . -name '__pycache__' -delete
 
 .PHONY: install
 install: clean build
