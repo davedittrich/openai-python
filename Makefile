@@ -3,7 +3,9 @@ default: install
 
 .PHONY: build
 build:
-	python setup.py sdist
+	rm -rf dist/ build/
+	python -m pip install build
+	python -m build .
 
 .PHONY: clean
 clean:
@@ -20,6 +22,6 @@ install: clean build
 
 .PHONY: upload
 upload:
-	twine upload dist/openai-*.tar.gz
-	rm dist/openai-*.tar.gz
-
+	python -m pip install twine
+	python -m twine upload dist/openai-*
+	rm -rf dist
