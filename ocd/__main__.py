@@ -34,10 +34,10 @@ from psec.utils import (
 # Internal imports
 import openai
 
-from ocd.utils import (  # pylint: disable=no-name-in-module
+from ocd.defaults import Defaults
+from ocd.utils import (
     BROWSER,
     BROWSER_EPILOG,
-    Defaults,  # pyright: reportGeneralTypeIssues=false
     open_browser,
 )
 from openai.version import VERSION
@@ -65,7 +65,6 @@ def create_psec_environment(environment: SecretsEnvironment) -> Path:
 
 # pyright: reportOptionalMemberAccess=false
 
-
 class OCDApp(App):
     """Main CLI application class."""
 
@@ -78,6 +77,9 @@ class OCDApp(App):
             ),
             deferred_help=True,
             )
+        # Store defaults in app for use by commands.
+        self.defaults = defaults
+        self.defaults_original = str(self.defaults)
         self.timer = Timer()
         self.secrets = None
         self.openai_base = 'https://beta.openai.com'
@@ -201,6 +203,12 @@ class OCDApp(App):
 
     def clean_up(self, cmd, result, err):
         self.LOG.debug("[-] clean_up command '%s'", cmd.cmd_name)
+        if str(self.defaults) != self.defaults_original:
+            # One or more defaults were changed, so need to be saved.
+            self.LOG.debug(
+                "[+] updating saved command line option defaults"
+            )
+            self.defaults.save_to_db()
         if err:
             self.LOG.debug("[-] got an error: %s", str(err))
             sys.exit(result)

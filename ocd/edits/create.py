@@ -55,7 +55,7 @@ class EditsCreate(ShowOne):
         )
         parser.add_argument(
             "-n",
-            default=1,
+            default=defaults.N,
             type=ranged_type(int, 1, 10),
             help="how many edits to generate",
         )
@@ -129,4 +129,3 @@ class EditsCreate(ShowOne):
 
 
 # vim: set fileencoding=utf-8 ts=4 sw=4 tw=0 et :
-

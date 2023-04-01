@@ -15,14 +15,10 @@ from cliff.command import Command
 
 # Local imports
 import openai
-from ocd.utils import (  # pylint: disable=no-name-in-module
-    Defaults,
-    ranged_type,
-)
+from ocd.utils import ranged_type
+
 
 # pyright: reportGeneralTypeIssues=false
-
-defaults = Defaults()
 
 
 class CodePythonDocstring(Command):
@@ -56,18 +52,18 @@ class CodePythonDocstring(Command):
         parser.add_argument(
             "-m", "--model",
             dest="model_id",
-            default=defaults.CODEX_MODEL_ID,
+            default=self.app.defaults.CODEX_MODEL_ID,
             help="ID of the model to use",
         )
         parser.add_argument(
             "--temperature",
-            default=defaults.CODE_TEMPERATURE,
+            default=self.app.defaults.CODE_TEMPERATURE,
             type=ranged_type(float, 0.0, 1.0),
             help="sampling temperature to use",
         )
         parser.add_argument(
             "--max-tokens",
-            default=defaults.MAX_CODE_TOKENS,
+            default=self.app.defaults.CODEX_MAX_TOKENS,
             help="maximum tokens",
         )
         parser.add_argument(

@@ -205,33 +205,5 @@ def open_browser(
         controller.open_new_tab(page)
 
 
-class Defaults():
-    """
-    Object to hold command line option default settings.
-    """
-
-    CODE_TEMPERATURE = '0.0'
-    CODEX_MODEL_ID = 'code-davinci-002'
-    EDIT_MODEL_ID = 'text-davinci-edit-001'
-    EMBEDDING_MODEL_ID = 'text-embedding-ada-002'
-    ENVIRONMENT = get_default_environment()
-    IMAGES_N = 1
-    IMAGES_RESPONSE_FORMATS = [
-        'b64_json',
-        'url',
-    ]
-    IMAGES_SIZES = [
-        "256x256",
-        "512x512",
-        "1024x1024"
-    ]
-    MAX_CODE_TOKENS = 500
-    MAX_IMAGES_N = 10
-    MAX_IMAGES_PROMPT = 1000
-    MAX_TOKENS = 16
-    MODEL_ID = 'curie-instruct-beta'
-    TEMPERATURE = '0.9'
-
-
 # vim: set fileencoding=utf-8 ts=4 sw=4 tw=0 et :
 

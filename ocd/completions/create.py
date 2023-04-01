@@ -134,6 +134,12 @@ class CompletionsCreate(ShowOne):
             help="ID of the model to use",
         )
         parser.add_argument(
+            "-n",
+            type=int,
+            default=defaults.N,
+            help="Number of choices to generate",
+        )
+        parser.add_argument(
             "--echo",
             action="store_true",
             default=False,
@@ -206,4 +212,3 @@ class CompletionsCreate(ShowOne):
 
 
 # vim: set fileencoding=utf-8 ts=4 sw=4 tw=0 et :
-
