@@ -82,7 +82,7 @@ class OCDApp(App):
         self.defaults_original = str(self.defaults)
         self.timer = Timer()
         self.secrets = None
-        self.openai_base = 'https://beta.openai.com'
+        self.openai_base = 'https://platform.openai.com'
         self.openai_docs_base = f'{self.openai_base}/docs'
 
     def build_option_parser(self, description, version):  # pylint: disable=arguments-differ, line-too-long
