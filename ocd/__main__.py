@@ -3,12 +3,12 @@
 """
 OCD: The OpenAI CLI by davedittrich.
 
-This entry point script uses the ``cliff`` library to provide a
-feature-rich CLI for accessing the OpenAI API. It has some overlap
-with the OpenAI CLI ``openai``, but has additional capabilities
-that don't require post-processing of output from API calls
-using other programs, though also not precluding their use if
-that is desired.
+This program provides a feature-rich alternative command line
+interface to ``openai-cli``for accessing OpenAI functionality
+via their API. It uses the ``cliff`` library to provide additional
+features and capabilities without having to post-process returned
+output from API calls using other programs (though also not
+precluding their use if that is desired.)
 
 """
 

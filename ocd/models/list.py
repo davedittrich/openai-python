@@ -31,9 +31,9 @@ class ModelsList(Lister):
         +-------+--------+------------+----------+-------+--------+
 
     Adding the `--fuzzy` option expands the results to include all models
-    that have an ID containing the name string. This is useful for identifying
-    the latest versioned model, fine-tuned models, or experimental versions
-    of a model::
+    that contain the name string anywhere in the model ID. This is useful
+    for identifying the latest model version, fine-tuned models, or
+    experimental versions of a model::
 
         $ ocd models list curie --fuzzy
         +-----------------------------+--------+------------+------------+-----------------------------+--------+
@@ -52,6 +52,12 @@ class ModelsList(Lister):
         | if-curie-v2                 | model  | 1610745968 | openai     | if-curie-v2                 | None   |
         | text-curie:001              | model  | 1641955047 | system     | text-curie:001              | None   |
         +-----------------------------+--------+------------+------------+-----------------------------+--------+
+        $ ocd models list embedding --fuzzy
+        +------------------------+--------+------------+-----------------+------------------------+--------+
+        | id                     | object |    created | owned_by        | root                   | parent |
+        +------------------------+--------+------------+-----------------+------------------------+--------+
+        | text-embedding-ada-002 | model  | 1671217299 | openai-internal | text-embedding-ada-002 | None   |
+        +------------------------+--------+------------+-----------------+------------------------+--------+
 
     If not otherwise specified, results are sorted by ``created` in descending order. This
     makes it easier to identify the latest models (e.g., a new fine-tuned model that you
