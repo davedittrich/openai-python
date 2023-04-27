@@ -57,7 +57,7 @@ class CodePythonDocstring(Command):
         )
         parser.add_argument(
             "--temperature",
-            default=self.app.defaults.CODE_TEMPERATURE,
+            default=self.app.defaults.CODEX_TEMPERATURE,
             type=ranged_type(float, 0.0, 1.0),
             help="sampling temperature to use",
         )
