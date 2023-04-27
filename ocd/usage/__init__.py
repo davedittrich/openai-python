@@ -12,7 +12,7 @@ import sys
 from cliff.command import Command
 
 # Local imports
-from ocd.utils import (  # pylint: disable=no-name-in-module
+from ocd.utils import (
     BROWSER_EPILOG,
     open_browser,
 )
