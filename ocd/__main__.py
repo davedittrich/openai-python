@@ -164,7 +164,7 @@ class OCDApp(App):
     def prepare_to_run_command(self, cmd):
         self.LOG.debug("[*] prepare_to_run_command('%s')", cmd.cmd_name)
         #
-        if cmd.cmd_name not in ['help', 'about']:
+        if cmd.cmd_name not in ['help']:
             self.secrets = SecretsEnvironment(
                 environment=self.options.environment,
                 export_env_vars=True,
